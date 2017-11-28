@@ -83,6 +83,8 @@ public class EnemyHealth : MonoBehaviour {
 	{
 		// The enemy is dead.
 		isDead = true;
+
+        StageController.Instance.AddPoint(10);
 		
 		// Turn the collider into a trigger so shots can pass through it.
 		transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;

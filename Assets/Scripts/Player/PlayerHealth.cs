@@ -14,6 +14,9 @@ public class PlayerHealth : MonoBehaviour
 	public Image damageImage;
 	// 주인공이 데미지를 입었을 때 재생할 오디오입니다.
 	public AudioClip deathClip;
+
+    public float flashSpeed = 5f;
+    public Color flashColor = new Color(1f, 0f, 0f, 0.1f);
 	
 	// 애니메이터 콘트롤러에 매개변수를 전달하기 위해 연결한 Animator 콤포넌트
 	Animator anim;
@@ -24,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
 	PlayerMovement playerMovement;
     // 플레이어가 죽었는지 저장하는 플래그
 	bool isDead;
+    bool damaged;
 	
 	// 오브젝트가 시작하면 호출되는 Awake() 함수입니다.
 	void Awake ()
@@ -40,11 +44,25 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.value = currentHealth;
     }
 
-	
-	// 플레이어가 공격받았을 때 호출되는 함수입니다.
-	public void TakeDamage (int amount)
+    private void Update()
+    {
+        if(damaged)
+        {
+            damageImage.color = flashColor;
+        }
+        else
+        {
+            damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
+        }
+
+        damaged = false;
+    }
+
+    // 플레이어가 공격받았을 때 호출되는 함수입니다.
+    public void TakeDamage (int amount)
 	{
-		
+        damaged = true;
+
 		// 공격을 받으면 amount만큼 체력을 감소시킵니다.
 		currentHealth -= amount;
 		
@@ -65,6 +83,8 @@ public class PlayerHealth : MonoBehaviour
 	
 	void Death ()
 	{
+        StageController.Instance.FinishGame();
+
 		// 캐릭터가 죽었다면 isDead 플래그를 true로 설정합니다.
 		isDead = true;
 		// 애니메이션에서 Die라는 트리거를 발동시킵니다.

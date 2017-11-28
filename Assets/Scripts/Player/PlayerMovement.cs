@@ -6,6 +6,7 @@ using System.Collections;
 public class PlayerMovement: MonoBehaviour {
 	
 	protected Animator avatar;
+    protected PlayerAttack playerAttack;
 
     float lastAttackTime, lastSkillTime, lastDashTime;
     public bool attacking = false;
@@ -14,7 +15,9 @@ public class PlayerMovement: MonoBehaviour {
 	void Start () 
 	{
 		avatar = GetComponent<Animator>();
-	}
+        playerAttack = GetComponent<PlayerAttack>();
+
+    }
     
 	float h, v;
 
@@ -73,6 +76,7 @@ public class PlayerMovement: MonoBehaviour {
             while(attacking)
             {
                 avatar.SetTrigger("AttackStart");
+                playerAttack.NormalAttack();
                 yield return new WaitForSeconds(1f);
             }
         }
@@ -84,6 +88,7 @@ public class PlayerMovement: MonoBehaviour {
         {
             avatar.SetBool("Skill", true);
             lastSkillTime = Time.time;
+            playerAttack.SkillAttack();
         }
     }
 
@@ -99,6 +104,7 @@ public class PlayerMovement: MonoBehaviour {
             lastDashTime = Time.time;
             dashing = true;
             avatar.SetTrigger("Dash");
+            playerAttack.DashAttack();
         }
     }
 
