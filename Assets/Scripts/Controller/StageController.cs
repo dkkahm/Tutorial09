@@ -12,6 +12,8 @@ public class StageController : MonoBehaviour {
     private void Awake()
     {
         Instance = this;
+
+        StartCoroutine(ShowAlert());
     }
 
     public void AddPoint(int Point)
@@ -22,6 +24,34 @@ public class StageController : MonoBehaviour {
 
     public void FinishGame()
     {
-        SceneManager.LoadScene("Lobby");
+        Debug.Log("FinishGame");
+
+        DialogDataConfirm confirm = new DialogDataConfirm("Restart?", "Restart?", delegate (bool yn)
+        {
+            if (yn)
+            {
+                Debug.Log("OK Pressed");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            else
+            {
+                Debug.Log("Cancel Pressed");
+                SceneManager.LoadScene("Lobby");
+            }
+        });
+
+        DialogManager.Instance.Push(confirm);
+    }
+
+    IEnumerator ShowAlert()
+    {
+        yield return new WaitForEndOfFrame();
+
+        DialogDataAlert alert = new DialogDataAlert("START", "Game Start!", delegate ()
+        {
+            Debug.Log("OK Pressed");
+        });
+
+        DialogManager.Instance.Push(alert);
     }
 }

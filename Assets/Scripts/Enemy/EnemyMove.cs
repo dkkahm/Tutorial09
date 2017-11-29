@@ -8,7 +8,7 @@ public class EnemyMove : MonoBehaviour {
 	NavMeshAgent nav;
 
 	void Awake () {
-        Debug.Log("EnemyMove.Awake()");
+        // Debug.Log("EnemyMove.Awake()");
 		
 		player = GameObject.FindGameObjectWithTag ("Player").transform;
 		nav = GetComponent <NavMeshAgent> ();
