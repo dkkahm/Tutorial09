@@ -61,8 +61,6 @@ public class PlayerHealth : MonoBehaviour
     // 플레이어가 공격받았을 때 호출되는 함수입니다.
     public void TakeDamage (int amount)
 	{
-        Debug.Log("TakeDamage(" + amount + ")");
-
         damaged = true;
 
 		// 공격을 받으면 amount만큼 체력을 감소시킵니다.
